@@ -261,7 +261,7 @@ void vehicle_options({String user_input = ''}){
           for (var vehicle in vehicles_to_print) {
             if(vehicle.person != null){
               print("Regnummer: ${vehicle.registration_number}, Typ: ${vehicle.type}");
-              print("Ägeranesnamn: ${vehicle.person.name}, Ägeranes Personnummer: ${vehicle.person.person_number}");
+              print("Ägeranesnamn: ${vehicle.person.name}, Ägeranes Personnummer: ${vehicle.person.person_number} \n");
             }
           }
           vehicle_options();
@@ -271,7 +271,7 @@ void vehicle_options({String user_input = ''}){
           vehicle_options();
         }
       case '3': // Uppdaera
-        stdout.write('Skriv regnumret för fordonet du vill uppdatera: ');
+        stdout.write('\nSkriv regnumret för fordonet du vill uppdatera: ');
         String? reg_number = stdin.readLineSync();
 
         if(reg_number != null && reg_number.isNotEmpty){
@@ -303,30 +303,30 @@ void vehicle_options({String user_input = ''}){
 
       case '4':   // Ta bort
 
-        stdout.write('Skriv personnummeret för personen du vill ta bort: ');
-        String? person_number = stdin.readLineSync();
+        stdout.write('\nSkriv regnumret för fordonet du vill ta bort: ');
+        String? reg_number = stdin.readLineSync();
 
-        if(person_number != null && person_number.isNotEmpty){
+        if(reg_number != null && reg_number.isNotEmpty){
 
-          Person? person = persons.getById(person_number);
+          Vehicle? vehicle = vehicles.getById(reg_number);
 
-          if(person != null){
+          if(vehicle != null){
 
-            bool result = persons.delete(person.person_number);
+            bool result = vehicles.delete(vehicle.registration_number);
 
             if(result == true){
-              print(person.name + ' tog bort');
-              person_options();
+              print(vehicle.registration_number + ' tog bort');
+              vehicle_options();
             }
             else{
               print('Ett fel har inträffat, vänligen försök igen');
-              person_options(user_input: option);
+              vehicle_options(user_input: option);
             }
 
           }
           else {
-            print('Kunde inte hitta personen, vänligen försök igen');
-            person_options(user_input: option);
+            print('Kunde inte hitta fordonet, vänligen försök igen');
+            vehicle_options(user_input: option);
           }
         }
 
@@ -334,11 +334,11 @@ void vehicle_options({String user_input = ''}){
       case '5':
         start_app();
       default:
-        person_options();
+        vehicle_options();
     }
   }
   else {
-    person_options();
+    vehicle_options();
   }
 
 
