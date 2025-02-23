@@ -5,7 +5,7 @@ import 'dart:io';
 
 PersonRepository persons = PersonRepository();
 VehicleRepository vehicles = VehicleRepository();
-ParkingSpaceRepository parking_paces = ParkingSpaceRepository();
+ParkingSpaceRepository parking_spaces = ParkingSpaceRepository();
 ParkingRepository parkings = ParkingRepository();
 
 void main(List<String> arguments) {
@@ -58,7 +58,7 @@ void handle_selected_option({required String option}){
     case '2':
       vehicle_options();
     case '3':
-    // executeApproved();
+     parking_space_options();
     case '4':
     // executeDenied();
     default:
@@ -344,3 +344,147 @@ void vehicle_options({String user_input = ''}){
 
 }
 
+void parking_space_options({String user_input = ''}){
+  stdout.writeln('\nDu har valt att hantera parkeringsplatser. Vad vill du göra?\n1. Lägg till ny parkeringsplats\n2. Visa alla parkeringsplatser\n3. Uppdatera parkeringsplats\n4. Ta bort parkeringsplats\n5. Gå tillbaka till huvudmenyn');
+  stdout.write('\nVälj ett alternativ (1-5): ');
+
+  List main_options = ['1', '2', '3', '4', '5'];
+  String? option;
+  if(user_input.isNotEmpty){
+    option = user_input;
+  }
+  else {
+    option = stdin.readLineSync();
+  }
+
+  if(option is String && option != null && option.isNotEmpty && main_options.contains(option)){
+
+    // man ska kunna flytta till koden i varje case till egen funktion
+    switch (option) {
+      case '1': // Lägg till
+        try{
+          stdout.write('\nSkriv parkeringsplats adress: ');
+          String? address = stdin.readLineSync();
+
+          stdout.write('Skriv parkeringsplats pris: ');
+          String? price = stdin.readLineSync();
+
+          stdout.write('Skriv parkeringsplats nummer: ');
+          String? number = stdin.readLineSync();
+
+
+
+          ParkingSpace? new_parking_space;
+          if(address != null &&  address.isNotEmpty && address.isNotEmpty && price != null && price.isNotEmpty && number != null && number.isNotEmpty){
+            new_parking_space =  ParkingSpace(id: generateId(),  address: address ?? '', number: number ?? '', price: price ?? '', );
+          }
+          else {
+            print('Ett fel har inträffat, vänligen försök igen \n');
+            parking_space_options(user_input: option);
+          }
+
+
+          if(new_parking_space != null){
+            parking_spaces.add(new_parking_space);
+            print('Parkeringsplatsen är tillagd \n');
+
+            parking_space_options();
+          }
+          else {
+            print('Ett fel har inträffat, vänligen försök igen \n');
+            parking_space_options(user_input: option);
+          }
+        }
+        catch(e){
+          print('Ett fel har inträffat, vänligen försök igen \n');
+          parking_space_options(user_input: option);
+        }
+      case '2': // Visa alla
+        List parking_spaces_to_print = parking_spaces.getAll();
+        if(parking_spaces_to_print.isNotEmpty){
+          print("\nAlla parkeringsplatser:");
+          for (var park_space in parking_spaces_to_print) {
+            if(park_space != null){
+              print("Adress: ${park_space.address}");
+              print("Pris: ${park_space.price}");
+              print("Nummer: ${park_space.number}\n");
+            }
+          }
+          parking_space_options();
+        }
+        else {
+          print("Inga parkeringsplatser tillagda");
+          parking_space_options();
+        }
+      case '3': // Uppdaera
+        stdout.write('\nSkriv numret för parkeringsplatsen du vill uppdatera: ');
+        String? number = stdin.readLineSync();
+
+        if(number != null && number.isNotEmpty){
+          ParkingSpace? parking = parking_spaces.getByNumber(number);
+
+          if(parking != null){
+            stdout.write('\Parkeringsplats hittad, Ändra adress: ');
+            String? address = stdin.readLineSync();
+
+
+            if(address != null && address.isNotEmpty){
+              parking.address = address ?? '';
+              print('Parkeringsplats ändrad');
+              parking_space_options();
+            }
+            else{
+              parking_space_options(user_input: option);
+            }
+
+          }
+          else {
+            print('Kunde inte hitta parkeringsplatsen, vänligen försök igen');
+            parking_space_options(user_input: option);
+          }
+        }
+
+      case '4':   // Ta bort
+
+        stdout.write('\nSkriv numret för parkeringsplatsen du vill ta bort: ');
+        String? number = stdin.readLineSync();
+
+        if(number != null && number.isNotEmpty){
+
+          ParkingSpace? parking = parking_spaces.getByNumber(number);
+
+          if(parking != null){
+
+            bool result = parking_spaces.delete(parking.number);
+
+            if(result == true){
+              print('Parkeringen med numret ' + parking.number + ' togs bort');
+              parking_space_options();
+            }
+            else{
+              print('Ett fel har inträffat, vänligen försök igen');
+              parking_space_options(user_input: option);
+            }
+
+          }
+          else {
+            print('Kunde inte hitta fordonet, vänligen försök igen');
+            parking_space_options(user_input: option);
+          }
+        }
+
+
+      case '5':
+        start_app();
+      default:
+        parking_space_options();
+    }
+  }
+  else {
+    parking_space_options();
+  }
+}
+
+String generateId() {
+  return DateTime.now().millisecondsSinceEpoch.toString();
+}

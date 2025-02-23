@@ -17,9 +17,10 @@ class Vehicle {
 class ParkingSpace {
   String id;
   String address;
+  String number;
   String price;
 
-  ParkingSpace({required this.id, required this.address, required this.price});
+  ParkingSpace({required this.id, required this.address, required this.number, required this.price});
 }
 
 
@@ -129,6 +130,14 @@ class ParkingSpaceRepository {
     }
   }
 
+  ParkingSpace? getByNumber(String number) {
+    try {
+      return _parkingSpaces.firstWhere((p) => p.number == number);
+    } catch (e) {
+      return null;
+    }
+  }
+
   bool update(ParkingSpace updatedParkingSpace) {
     for (int i = 0; i < _parkingSpaces.length; i++) {
       if (_parkingSpaces[i].id == updatedParkingSpace.id) {
@@ -139,9 +148,9 @@ class ParkingSpaceRepository {
     return false;
   }
 
-  bool delete(String id) {
+  bool delete(String number) {
     try {
-      _parkingSpaces.removeWhere((p) => p.id == id);
+      _parkingSpaces.removeWhere((p) => p.number == number);
       return true;
     } catch (e) {
       return false;
