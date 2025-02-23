@@ -58,24 +58,23 @@ void handle_selected_option({required String option}){
     case '2':
       vehicle_options();
     case '3':
-     parking_space_options();
+      parking_space_options();
     case '4':
-    // executeDenied();
+      parking_options();
     default:
     //  executeUnknown();
   }
 }
 
 void person_options({String user_input = ''}){
-  stdout.writeln('\nDu har valt att hantera Personer. Vad vill du göra?\n1. Lägg till ny person\n2. Visa alla personer\n3. Uppdatera person\n4. Ta bort person\n5. Gå tillbaka till huvudmenyn');
-  stdout.write('\nVälj ett alternativ (1-5): ');
-
   List main_options = ['1', '2', '3', '4', '5'];
   String? option;
   if(user_input.isNotEmpty){
     option = user_input;
   }
   else {
+    stdout.writeln('\nDu har valt att hantera Personer. Vad vill du göra?\n1. Lägg till ny person\n2. Visa alla personer\n3. Uppdatera person\n4. Ta bort person\n5. Gå tillbaka till huvudmenyn');
+    stdout.write('\nVälj ett alternativ (1-5): ');
     option = stdin.readLineSync();
   }
 
@@ -137,7 +136,7 @@ void person_options({String user_input = ''}){
 
           }
           else {
-            print('Kunde inte hitta personen, vänligen försök igen');
+            print('Kunde inte hitta personen, vänligen försök igen \n');
             person_options(user_input: option);
           }
         }
@@ -160,13 +159,13 @@ void person_options({String user_input = ''}){
               person_options();
             }
             else{
-              print('Ett fel har inträffat, vänligen försök igen');
+              print('Ett fel har inträffat, vänligen försök igen \n');
               person_options(user_input: option);
             }
 
           }
           else {
-            print('Kunde inte hitta personen, vänligen försök igen');
+            print('Kunde inte hitta personen, vänligen försök igen \n');
             person_options(user_input: option);
           }
         }
@@ -187,8 +186,6 @@ void person_options({String user_input = ''}){
 
 
 void vehicle_options({String user_input = ''}){
-  stdout.writeln('\nDu har valt att hantera Fordon. Vad vill du göra?\n1. Lägg till nytt fordon\n2. Visa alla fordon\n3. Uppdatera fordon\n4. Ta bort fordon\n5. Gå tillbaka till huvudmenyn');
-  stdout.write('\nVälj ett alternativ (1-5): ');
 
   List main_options = ['1', '2', '3', '4', '5'];
   String? option;
@@ -196,6 +193,8 @@ void vehicle_options({String user_input = ''}){
     option = user_input;
   }
   else {
+    stdout.writeln('\nDu har valt att hantera Fordon. Vad vill du göra?\n1. Lägg till nytt fordon\n2. Visa alla fordon\n3. Uppdatera fordon\n4. Ta bort fordon\n5. Gå tillbaka till huvudmenyn');
+    stdout.write('\nVälj ett alternativ (1-5): ');
     option = stdin.readLineSync();
   }
 
@@ -345,8 +344,6 @@ void vehicle_options({String user_input = ''}){
 }
 
 void parking_space_options({String user_input = ''}){
-  stdout.writeln('\nDu har valt att hantera parkeringsplatser. Vad vill du göra?\n1. Lägg till ny parkeringsplats\n2. Visa alla parkeringsplatser\n3. Uppdatera parkeringsplats\n4. Ta bort parkeringsplats\n5. Gå tillbaka till huvudmenyn');
-  stdout.write('\nVälj ett alternativ (1-5): ');
 
   List main_options = ['1', '2', '3', '4', '5'];
   String? option;
@@ -354,6 +351,8 @@ void parking_space_options({String user_input = ''}){
     option = user_input;
   }
   else {
+    stdout.writeln('\nDu har valt att hantera parkeringsplatser. Vad vill du göra?\n1. Lägg till ny parkeringsplats\n2. Visa alla parkeringsplatser\n3. Uppdatera parkeringsplats\n4. Ta bort parkeringsplats\n5. Gå tillbaka till huvudmenyn');
+    stdout.write('\nVälj ett alternativ (1-5): ');
     option = stdin.readLineSync();
   }
 
@@ -405,9 +404,7 @@ void parking_space_options({String user_input = ''}){
           print("\nAlla parkeringsplatser:");
           for (var park_space in parking_spaces_to_print) {
             if(park_space != null){
-              print("Adress: ${park_space.address}");
-              print("Pris: ${park_space.price}");
-              print("Nummer: ${park_space.number}\n");
+              print("Nummer: ${park_space.number}, Adress: ${park_space.address} Pris: ${park_space.price}\n");
             }
           }
           parking_space_options();
@@ -424,7 +421,7 @@ void parking_space_options({String user_input = ''}){
           ParkingSpace? parking = parking_spaces.getByNumber(number);
 
           if(parking != null){
-            stdout.write('\Parkeringsplats hittad, Ändra adress: ');
+            stdout.write('\nParkeringsplats hittad, Ändra adress: ');
             String? address = stdin.readLineSync();
 
 
@@ -468,7 +465,7 @@ void parking_space_options({String user_input = ''}){
 
           }
           else {
-            print('Kunde inte hitta fordonet, vänligen försök igen');
+            print('Kunde inte hitta parkeringsplatsen, vänligen försök igen');
             parking_space_options(user_input: option);
           }
         }
@@ -482,6 +479,127 @@ void parking_space_options({String user_input = ''}){
   }
   else {
     parking_space_options();
+  }
+}
+
+void parking_options({String user_input = ''}){
+
+  List main_options = ['1', '2', '3', '4', '5'];
+  String? option;
+  if(user_input.isNotEmpty){
+    option = user_input;
+  }
+  else {
+    stdout.writeln('\nDu har valt att hantera Parkeringar. Vad vill du göra?\n1. Lägg till ny parkering\n2. Visa alla parkeringar\n3. Gå tillbaka till huvudmenyn');
+    stdout.write('\nVälj ett alternativ (1-5): ');
+    option = stdin.readLineSync();
+  }
+
+  if(option is String && option != null && option.isNotEmpty && main_options.contains(option)){
+
+    // man ska kunna flytta till koden i varje case till egen funktion
+    switch (option) {
+      case '1': // Lägg till
+        try{
+
+          stdout.write('Skriv registrering nummer: ');
+          String? reg_number = stdin.readLineSync();
+
+          stdout.write('Skriv parkeringsplats nummer: ');
+          String? park_space_number = stdin.readLineSync();
+
+          Vehicle? vehicle;
+          ParkingSpace? parking_space;
+          if(reg_number != null && reg_number.isNotEmpty && park_space_number != null && park_space_number.isNotEmpty){
+            parking_space =  parking_spaces.getByNumber(park_space_number);
+            vehicle =  vehicles.getById(reg_number);
+          }
+          else {
+            print('Fyll i parkeringsplats numret och fordons numret, vänligen försök igen \n');
+            parking_options(user_input: option);
+          }
+
+          if(parking_space == null || vehicle == null){
+            print('Parkeringsplatsen eller fordonet existerar inte, fordon och parkering platsen måste existera för att lägga parkeringen. vänligen försök igen \n');
+            parking_options();
+          }
+
+
+          String? start_time = get_valid_time_user_input(text: 'starttid');
+          String? end_time = get_valid_time_user_input(text: 'sluttid');
+
+
+          if(vehicle != null && parking_space != null && start_time != null && start_time.isNotEmpty && end_time != null && end_time.isNotEmpty ){
+            Parking parking = Parking(vehicle: vehicle, parking_space: parking_space, start_time: start_time, end_time: end_time);
+            parkings.add(parking);
+
+            print('\nParkeringen är skapad \n');
+
+            parking_options();
+          }
+          else {
+            print('\n Ett fel har inträffat, vänligen försök igen \n');
+            parking_options(user_input: option);
+          }
+        }
+        catch(e){
+          print('\n Ett fel har inträffat, vänligen försök igen \n');
+          parking_options(user_input: option);
+        }
+      case '2': // Visa alla
+        List parkings_to_print = parkings.getAll();
+        if(parkings_to_print.isNotEmpty){
+          print("\nAlla parkeringar:");
+          for (var parking in parkings_to_print) {
+            if(parking.vehicle != null){
+              print("Regnummer: ${parking.vehicle.registration_number}, Typ: ${parking.vehicle.type}");
+              print("Ägeranesnamn: ${parking.vehicle.person.name}, Ägeranes Personnummer: ${parking.vehicle.person.person_number}");
+            }
+            if(parking.parking_space != null){
+              print("Adress: ${parking.parking_space.address}, Pris: ${parking.parking_space.price}, Nummer: ${parking.parking_space.number}");
+            }
+
+            if(parking.start_time != null && parking.end_time != null){
+              print("Starttid: ${parking.start_time}, Sluttid: ${parking.end_time}");
+            }
+          }
+          parking_options();
+        }
+        else {
+          print("Inga parkeringar tillagda");
+          parking_options();
+        }
+      case '3':
+        start_app();
+      default:
+        parking_options();
+    }
+  }
+  else {
+    parking_options();
+  }
+
+
+}
+
+String? get_valid_time_user_input({required String text}) {
+  final RegExp timePattern = RegExp(r'^(?:[01]\d|2[0-3]):[0-5]\d$'); // Format ska vara HH:mm
+
+  while (true) {
+    stdout.write('Skriv ' + text + ' (t.ex. 16:00): ');
+    String? input = stdin.readLineSync()?.trim();
+
+    if (input == null || input.isEmpty) {
+      print("Fel: Du måste ange en tid.");
+      continue;
+    }
+
+    if (!timePattern.hasMatch(input)) {
+      print("Fel: Ange en giltig tid i formatet HH:mm (t.ex. 16:00).");
+      continue;
+    }
+
+    return input;
   }
 }
 

@@ -30,7 +30,7 @@ class Parking {
   String? start_time;
   String? end_time;
 
-  Parking({required this.vehicle, required this.parking_space, this.start_time, this.end_time});
+  Parking({required this.vehicle, required this.parking_space, required this.start_time, required this.end_time});
 }
 
 class PersonRepository {
